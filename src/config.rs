@@ -526,6 +526,13 @@ make_config! {
         /// Bypass admin page security (Know the risks!) |> Disables the Admin Token for the admin page so you may use your own auth in-front
         disable_admin_token:    bool,   true,   def,    false;
 
+        /// Disable some new device emails (Know the risks!) |> This will disable sending the new device email for all clients that identify as the web vault.
+        /// Be warned, that the client tells the server what it is and there is no way for the server to know if the client lied.
+        /// Therefore by enabling this, any client that identifies itself as the web vault will not trigger the mail!
+        /// This is for people that delete cookies often and get so annoyed by the mails that they just ignore them completely.
+        /// At this point there is no value in even sending the mails.
+        disable_wv_new_device_email:   bool,   true,   def,    false;
+
         /// Allowed iframe ancestors (Know the risks!) |> Allows other domains to embed the web vault into an iframe, useful for embedding into secure intranets
         allowed_iframe_ancestors: String, true, def,    String::new();
 
