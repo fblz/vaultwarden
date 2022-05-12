@@ -149,8 +149,8 @@ async fn _password_login(data: ConnectData, conn: DbConn, ip: &ClientIp) -> Json
 
     let twofactor_token = twofactor_auth(&user.uuid, &data, &mut device, ip, &conn).await?;
 
-    if (device.atype > 8 && device.atype < 15) || device.atype == 17 || device.atype == 18 {
-        info!("Ignored new device email for device type {} for User {}.", device.atype, username);
+    if CONFIG.disable_wv_new_device_email() && data.client_id.as_ref().unwrap() == "web" {
+        info!("Ignored new device email for User {} with device {} (type {}).", username, device.name, device.atype);
     } else if CONFIG.mail_enabled() && new_device {
         if let Err(e) = mail::send_new_device_logged_in(&user.email, &ip.ip.to_string(), &now, &device.name) {
             error!("Error sending new device email: {:#?}", e);
